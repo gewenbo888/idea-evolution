@@ -1,0 +1,455 @@
+import type { Bi } from "@/lib/i18n";
+
+export type IdeaType = "religion" | "philosophy" | "ideology" | "paradigm" | "meme" | "symbol";
+
+export type Traits = {
+  resonance: number; simplicity: number; institution: number; technology: number;
+  adaptability: number; utility: number; narrative: number; symbol: number;
+};
+
+export type Idea = {
+  id: string;
+  type: IdeaType;
+  name: Bi;
+  origin: [number, number];     // [lat, lon]
+  originLabel: Bi;
+  bornYear: number;             // negative = BCE
+  desc: Bi;
+  parents: string[];            // ids of ancestor ideas
+  spread: { year: number; coord: [number, number]; label: Bi }[];
+  traits: Traits;
+};
+
+const t = (resonance: number, simplicity: number, institution: number, technology: number,
+           adaptability: number, utility: number, narrative: number, symbol: number): Traits =>
+  ({ resonance, simplicity, institution, technology, adaptability, utility, narrative, symbol });
+
+export const IDEAS: Idea[] = [
+  // ---------- Religions ----------
+  {
+    id: "buddhism", type: "religion",
+    name: { en: "Buddhism", zh: "佛教" },
+    origin: [27.5, 84.4], originLabel: { en: "Lumbini", zh: "蓝毗尼" },
+    bornYear: -500,
+    desc: { en: "A path of liberation founded by Siddhartha Gautama, transmitted along trade routes from the Indo-Gangetic plain across Asia.",
+            zh: "悉达多·乔达摩创立的解脱之路，沿贸易路线由恒河平原传遍亚洲。" },
+    parents: ["upanishads"],
+    spread: [
+      { year: -250, coord: [7.9, 80.7], label: { en: "Sri Lanka",      zh: "斯里兰卡" } },
+      { year: 100,  coord: [34.5, 69.1], label: { en: "Gandhara",      zh: "犍陀罗" } },
+      { year: 300,  coord: [40.0, 116.4], label: { en: "Northern China", zh: "中原" } },
+      { year: 600,  coord: [35.0, 138.0], label: { en: "Japan",        zh: "日本" } },
+      { year: 700,  coord: [29.6, 91.1], label: { en: "Tibet",         zh: "西藏" } },
+      { year: 1500, coord: [13.7, 100.5], label: { en: "Siam",         zh: "暹罗" } },
+    ],
+    traits: t(82, 70, 78, 25, 95, 75, 88, 72),
+  },
+  {
+    id: "christianity", type: "religion",
+    name: { en: "Christianity", zh: "基督教" },
+    origin: [31.7, 35.2], originLabel: { en: "Jerusalem", zh: "耶路撒冷" },
+    bornYear: 30,
+    desc: { en: "A messianic faith born within Second Temple Judaism that fused Jewish prophetic tradition with Greek philosophy and was carried by Roman roads to a global majority religion.",
+            zh: "诞生于第二圣殿犹太教内的弥赛亚信仰，融合犹太先知传统与希腊哲学，借罗马道路扩展为全球性宗教。" },
+    parents: ["judaism", "greek_philosophy"],
+    spread: [
+      { year: 64,   coord: [41.9, 12.5], label: { en: "Rome",         zh: "罗马" } },
+      { year: 313,  coord: [41.0, 28.9], label: { en: "Constantinople", zh: "君士坦丁堡" } },
+      { year: 800,  coord: [48.7, 2.5], label: { en: "Western Europe", zh: "西欧" } },
+      { year: 1500, coord: [-12.0, -77.0], label: { en: "Americas",   zh: "美洲" } },
+      { year: 1800, coord: [-1.3, 36.8], label: { en: "Sub-Saharan Africa", zh: "撒哈拉以南非洲" } },
+      { year: 1900, coord: [37.5, 127.0], label: { en: "Korea",       zh: "朝鲜半岛" } },
+    ],
+    traits: t(88, 65, 92, 35, 90, 78, 95, 85),
+  },
+  {
+    id: "islam", type: "religion",
+    name: { en: "Islam", zh: "伊斯兰教" },
+    origin: [21.4, 39.8], originLabel: { en: "Mecca", zh: "麦加" },
+    bornYear: 610,
+    desc: { en: "A revelation through Muhammad that united the Arab world and spread along trade and conquest routes across three continents within a century.",
+            zh: "通过穆罕默德降下的启示，统一阿拉伯世界，并在一个世纪内沿商路与征服路线遍布三大洲。" },
+    parents: ["judaism", "christianity"],
+    spread: [
+      { year: 750,  coord: [31.6, 4.0],  label: { en: "Maghreb",     zh: "马格里布" } },
+      { year: 800,  coord: [40.4, -3.7], label: { en: "Iberia",      zh: "伊比利亚" } },
+      { year: 1000, coord: [41.0, 64.3], label: { en: "Central Asia", zh: "中亚" } },
+      { year: 1200, coord: [28.6, 77.2], label: { en: "Delhi",       zh: "德里" } },
+      { year: 1400, coord: [-6.2, 106.8], label: { en: "Java",       zh: "爪哇" } },
+      { year: 1600, coord: [12.0, 8.5],  label: { en: "Hausaland",   zh: "豪萨兰" } },
+    ],
+    traits: t(86, 75, 90, 30, 85, 82, 88, 80),
+  },
+  {
+    id: "confucianism", type: "religion",
+    name: { en: "Confucianism", zh: "儒家" },
+    origin: [35.6, 117.0], originLabel: { en: "Lu State", zh: "鲁国" },
+    bornYear: -500,
+    desc: { en: "An ethical-political tradition centered on ritual, family, and the cultivated person, which became state orthodoxy in China and shaped East Asian governance for two millennia.",
+            zh: "以礼、家与君子修养为核心的伦理政治传统，成为中国官方正统，并塑造东亚两千年的治理。" },
+    parents: [],
+    spread: [
+      { year: -200, coord: [34.3, 108.9], label: { en: "Han Empire",   zh: "汉朝" } },
+      { year: 600,  coord: [37.5, 127.0], label: { en: "Korean kingdoms", zh: "三国" } },
+      { year: 700,  coord: [35.0, 138.0], label: { en: "Heian Japan", zh: "平安日本" } },
+      { year: 1100, coord: [21.0, 105.8], label: { en: "Đại Việt",     zh: "大越" } },
+      { year: 1900, coord: [1.3, 103.8],  label: { en: "Singapore",    zh: "新加坡" } },
+    ],
+    traits: t(72, 70, 95, 20, 85, 90, 80, 70),
+  },
+  {
+    id: "hinduism", type: "religion",
+    name: { en: "Hinduism", zh: "印度教" },
+    origin: [25.0, 78.0], originLabel: { en: "Indus-Ganges", zh: "印度河—恒河" },
+    bornYear: -1500,
+    desc: { en: "A non-centralized constellation of traditions, rituals, and philosophies that absorbed and recombined dozens of regional cults across millennia.",
+            zh: "无中心的传统、仪式与哲学星群，数千年来吸纳并重组数十种地方崇拜。" },
+    parents: [],
+    spread: [
+      { year: 0,    coord: [11.0, 79.0], label: { en: "Tamil south",  zh: "泰米尔南方" } },
+      { year: 800,  coord: [-8.4, 115.2], label: { en: "Bali",        zh: "巴厘岛" } },
+      { year: 1900, coord: [22.3, 114.2], label: { en: "Diaspora",    zh: "海外侨民" } },
+    ],
+    traits: t(80, 50, 70, 20, 95, 75, 82, 78),
+  },
+  {
+    id: "daoism", type: "philosophy",
+    name: { en: "Daoism", zh: "道家" },
+    origin: [34.3, 108.9], originLabel: { en: "Warring States China", zh: "战国" },
+    bornYear: -400,
+    desc: { en: "A philosophy of spontaneity, non-coercion, and alignment with the natural way; later mutating into a popular religion with alchemy and immortality cults.",
+            zh: "顺应自然、无为不争的哲学；后衍生为追求炼丹与长生的民间宗教。" },
+    parents: [],
+    spread: [
+      { year: 200,  coord: [30.7, 104.0], label: { en: "Sichuan",     zh: "四川" } },
+      { year: 1000, coord: [37.5, 127.0], label: { en: "Korea",       zh: "朝鲜" } },
+    ],
+    traits: t(78, 78, 60, 18, 90, 70, 80, 88),
+  },
+  {
+    id: "judaism", type: "religion",
+    name: { en: "Judaism", zh: "犹太教" },
+    origin: [31.7, 35.2], originLabel: { en: "Levant", zh: "黎凡特" },
+    bornYear: -1300,
+    desc: { en: "The earliest large-scale strict monotheism, organized around covenant, text, and diaspora resilience.",
+            zh: "最早的大规模严格一神教，围绕约、经典与流散韧性组织。" },
+    parents: [],
+    spread: [
+      { year: -500, coord: [32.5, 44.4], label: { en: "Babylon",      zh: "巴比伦" } },
+      { year: 900,  coord: [36.7, -4.4], label: { en: "Iberia",       zh: "伊比利亚" } },
+      { year: 1500, coord: [52.2, 21.0], label: { en: "Poland",       zh: "波兰" } },
+      { year: 1900, coord: [40.7, -74.0], label: { en: "New York",    zh: "纽约" } },
+    ],
+    traits: t(80, 65, 80, 25, 92, 80, 90, 82),
+  },
+
+  // ---------- Philosophies ----------
+  {
+    id: "upanishads", type: "philosophy",
+    name: { en: "Upanishadic thought", zh: "奥义书思想" },
+    origin: [25.3, 82.9], originLabel: { en: "Ganges valley", zh: "恒河流域" },
+    bornYear: -800,
+    desc: { en: "A turn from sacrificial ritual toward inner inquiry — Atman, Brahman, the unity behind appearance.",
+            zh: "由献祭仪式转向内省 — 阿特曼、梵、表象背后的统一。" },
+    parents: [],
+    spread: [{ year: -500, coord: [27.5, 84.4], label: { en: "Magadha", zh: "摩揭陀" } }],
+    traits: t(75, 40, 50, 15, 90, 60, 75, 65),
+  },
+  {
+    id: "greek_philosophy", type: "philosophy",
+    name: { en: "Greek philosophy", zh: "希腊哲学" },
+    origin: [38.0, 23.7], originLabel: { en: "Athens & Ionia", zh: "雅典与伊奥尼亚" },
+    bornYear: -600,
+    desc: { en: "The first sustained tradition of secular reasoning — physics, ethics, logic — that became the substrate of Western thought.",
+            zh: "首个持久的世俗理性传统 — 物理、伦理、逻辑 — 成为西方思想的基底。" },
+    parents: [],
+    spread: [
+      { year: -300, coord: [31.2, 29.9], label: { en: "Alexandria",  zh: "亚历山大" } },
+      { year: 800,  coord: [33.3, 44.4], label: { en: "Baghdad",     zh: "巴格达" } },
+      { year: 1200, coord: [43.7, 11.3], label: { en: "Florence",    zh: "佛罗伦萨" } },
+    ],
+    traits: t(70, 55, 78, 40, 92, 80, 85, 75),
+  },
+  {
+    id: "legalism", type: "philosophy",
+    name: { en: "Legalism", zh: "法家" },
+    origin: [34.3, 108.9], originLabel: { en: "Qin", zh: "秦" },
+    bornYear: -300,
+    desc: { en: "A statecraft theory of strict laws, rewards, and punishments that engineered the unification of China.",
+            zh: "以严刑峻法、信赏必罚为核心的治术理论，工程化地完成中国统一。" },
+    parents: [],
+    spread: [{ year: -221, coord: [34.3, 108.9], label: { en: "Qin Empire", zh: "秦帝国" } }],
+    traits: t(55, 75, 88, 30, 60, 90, 70, 60),
+  },
+  {
+    id: "stoicism", type: "philosophy",
+    name: { en: "Stoicism", zh: "斯多葛主义" },
+    origin: [38.0, 23.7], originLabel: { en: "Athens", zh: "雅典" },
+    bornYear: -300,
+    desc: { en: "A discipline of inner sovereignty — control what you can, accept what you can't — revived by emperors and modern self-help culture.",
+            zh: "内在主权之学 — 可控者尽心，不可控者顺受 — 为皇帝与现代自助文化所复兴。" },
+    parents: ["greek_philosophy"],
+    spread: [
+      { year: 100,  coord: [41.9, 12.5], label: { en: "Imperial Rome", zh: "罗马帝国" } },
+      { year: 2010, coord: [37.8, -122.4], label: { en: "Silicon Valley", zh: "硅谷" } },
+    ],
+    traits: t(82, 80, 50, 60, 85, 85, 78, 65),
+  },
+  {
+    id: "existentialism", type: "philosophy",
+    name: { en: "Existentialism", zh: "存在主义" },
+    origin: [48.85, 2.35], originLabel: { en: "Paris", zh: "巴黎" },
+    bornYear: 1940,
+    desc: { en: "A philosophy of radical freedom and meaning-making in a universe without given purpose.",
+            zh: "在无既定目的的宇宙中，关于彻底自由与自创意义的哲学。" },
+    parents: ["stoicism", "christianity"],
+    spread: [
+      { year: 1960, coord: [40.7, -74.0], label: { en: "New York",    zh: "纽约" } },
+      { year: 1980, coord: [35.7, 139.7], label: { en: "Tokyo",       zh: "东京" } },
+    ],
+    traits: t(82, 60, 35, 55, 75, 50, 80, 50),
+  },
+
+  // ---------- Ideologies ----------
+  {
+    id: "liberalism", type: "ideology",
+    name: { en: "Liberalism", zh: "自由主义" },
+    origin: [51.5, -0.1], originLabel: { en: "London", zh: "伦敦" },
+    bornYear: 1689,
+    desc: { en: "Rights of the individual, limited government, market exchange, civil society — a meme that dismantled aristocracy and birthed modern democracies.",
+            zh: "个人权利、有限政府、市场交换、公民社会 — 拆解贵族制并孕育现代民主的迷因。" },
+    parents: ["greek_philosophy", "christianity"],
+    spread: [
+      { year: 1789, coord: [48.85, 2.35], label: { en: "Paris",       zh: "巴黎" } },
+      { year: 1800, coord: [38.9, -77.0], label: { en: "Washington",  zh: "华盛顿" } },
+      { year: 1947, coord: [28.6, 77.2],  label: { en: "Delhi",       zh: "德里" } },
+      { year: 1990, coord: [55.8, 37.6],  label: { en: "Moscow",      zh: "莫斯科" } },
+    ],
+    traits: t(75, 65, 88, 70, 88, 88, 85, 65),
+  },
+  {
+    id: "marxism", type: "ideology",
+    name: { en: "Marxism", zh: "马克思主义" },
+    origin: [50.9, 6.9], originLabel: { en: "Rhineland", zh: "莱茵兰" },
+    bornYear: 1848,
+    desc: { en: "A materialist theory of history that became a revolutionary movement, mutating into Leninism, Maoism, Eurocommunism, dependency theory, critical theory, and beyond.",
+            zh: "唯物史观所衍生的革命运动，分化为列宁主义、毛主义、欧洲共产主义、依附论、批判理论等。" },
+    parents: ["liberalism", "greek_philosophy"],
+    spread: [
+      { year: 1917, coord: [59.9, 30.3], label: { en: "Petrograd",    zh: "彼得格勒" } },
+      { year: 1949, coord: [39.9, 116.4], label: { en: "Beijing",     zh: "北京" } },
+      { year: 1959, coord: [23.1, -82.4], label: { en: "Havana",      zh: "哈瓦那" } },
+      { year: 1968, coord: [48.85, 2.35], label: { en: "Paris (May)", zh: "五月风暴" } },
+    ],
+    traits: t(85, 60, 80, 50, 92, 75, 92, 75),
+  },
+  {
+    id: "nationalism", type: "ideology",
+    name: { en: "Nationalism", zh: "民族主义" },
+    origin: [48.85, 2.35], originLabel: { en: "Revolutionary France", zh: "革命法国" },
+    bornYear: 1789,
+    desc: { en: "The premise that the nation is the highest political unit — a meme that drew modern borders and fuels every separatist and unification movement.",
+            zh: "以民族为最高政治单位的前提 — 一个划定现代边界、驱动各种分离与统一运动的迷因。" },
+    parents: ["liberalism"],
+    spread: [
+      { year: 1848, coord: [50.1, 14.4], label: { en: "Bohemia",      zh: "波希米亚" } },
+      { year: 1871, coord: [52.5, 13.4], label: { en: "Germany",      zh: "德意志" } },
+      { year: 1947, coord: [33.7, 73.0], label: { en: "Pakistan",     zh: "巴基斯坦" } },
+      { year: 2000, coord: [50.4, 30.5], label: { en: "Eastern Europe", zh: "东欧" } },
+    ],
+    traits: t(92, 80, 80, 60, 90, 70, 88, 92),
+  },
+  {
+    id: "fascism", type: "ideology",
+    name: { en: "Fascism", zh: "法西斯主义" },
+    origin: [41.9, 12.5], originLabel: { en: "Italy", zh: "意大利" },
+    bornYear: 1919,
+    desc: { en: "A revolutionary nationalism fused with mass mobilization, charismatic leadership, and the cult of violent rebirth.",
+            zh: "革命民族主义与大众动员、领袖崇拜及暴力再生神话的合体。" },
+    parents: ["nationalism"],
+    spread: [
+      { year: 1933, coord: [52.5, 13.4], label: { en: "Germany",      zh: "德国" } },
+      { year: 1936, coord: [40.4, -3.7], label: { en: "Spain",        zh: "西班牙" } },
+    ],
+    traits: t(88, 85, 70, 60, 60, 35, 88, 90),
+  },
+  {
+    id: "transhumanism", type: "ideology",
+    name: { en: "Transhumanism", zh: "超人类主义" },
+    origin: [37.4, -122.1], originLabel: { en: "Bay Area", zh: "湾区" },
+    bornYear: 1990,
+    desc: { en: "The aspiration to overcome biological limits through technology — longevity, cognitive augmentation, mind uploading.",
+            zh: "通过技术超越生物极限的愿景 — 长寿、认知增强、意识上传。" },
+    parents: ["liberalism", "scientific_method"],
+    spread: [
+      { year: 2010, coord: [37.5, 126.9], label: { en: "Seoul",       zh: "首尔" } },
+      { year: 2020, coord: [25.2, 55.3],  label: { en: "Dubai",       zh: "迪拜" } },
+    ],
+    traits: t(72, 70, 50, 92, 80, 60, 78, 60),
+  },
+
+  // ---------- Paradigms ----------
+  {
+    id: "scientific_method", type: "paradigm",
+    name: { en: "Scientific method", zh: "科学方法" },
+    origin: [51.5, -0.1], originLabel: { en: "Royal Society", zh: "皇家学会" },
+    bornYear: 1660,
+    desc: { en: "Hypothesis, experiment, peer replication, public knowledge — the meme that turned philosophy into a cumulative civilization-scale process.",
+            zh: "假设、实验、同行复现、公共知识 — 把哲学转为可累积的文明级过程的迷因。" },
+    parents: ["greek_philosophy"],
+    spread: [
+      { year: 1700, coord: [48.85, 2.35], label: { en: "France",      zh: "法国" } },
+      { year: 1850, coord: [52.5, 13.4],  label: { en: "Germany",     zh: "德国" } },
+      { year: 1950, coord: [37.4, -122.1], label: { en: "Stanford",   zh: "斯坦福" } },
+    ],
+    traits: t(70, 50, 92, 95, 95, 95, 80, 60),
+  },
+  {
+    id: "evolution", type: "paradigm",
+    name: { en: "Evolution by natural selection", zh: "自然选择进化论" },
+    origin: [51.4, 0.0], originLabel: { en: "Down House", zh: "唐恩屋" },
+    bornYear: 1859,
+    desc: { en: "Variation, inheritance, selection — the master meme that re-explained life, then minds, then ideas themselves.",
+            zh: "变异、遗传、选择 — 重新诠释生命、心智，乃至观念本身的母迷因。" },
+    parents: ["scientific_method"],
+    spread: [
+      { year: 1900, coord: [40.7, -74.0], label: { en: "Modern synthesis", zh: "现代综合" } },
+      { year: 1970, coord: [37.4, -122.1], label: { en: "Memetics",   zh: "迷因学" } },
+    ],
+    traits: t(80, 75, 90, 85, 95, 85, 88, 65),
+  },
+  {
+    id: "relativity", type: "paradigm",
+    name: { en: "Relativity", zh: "相对论" },
+    origin: [46.95, 7.45], originLabel: { en: "Bern", zh: "伯尔尼" },
+    bornYear: 1905,
+    desc: { en: "Space, time, mass, gravity — re-derived from a few symmetry principles. A mind-pivot for modern physics.",
+            zh: "由若干对称原理重新推出时空、质量与引力，是现代物理的心智枢纽。" },
+    parents: ["scientific_method"],
+    spread: [{ year: 1916, coord: [52.5, 13.4], label: { en: "Berlin", zh: "柏林" } }],
+    traits: t(75, 30, 90, 95, 70, 80, 85, 70),
+  },
+  {
+    id: "quantum", type: "paradigm",
+    name: { en: "Quantum mechanics", zh: "量子力学" },
+    origin: [52.5, 13.4], originLabel: { en: "Berlin & Copenhagen", zh: "柏林与哥本哈根" },
+    bornYear: 1925,
+    desc: { en: "Probabilistic, non-local, observer-coupled — a paradigm that overturned classical intuition and powers all modern hardware.",
+            zh: "概率、非定域、与观测者耦合 — 推翻经典直觉、支撑现代硬件的范式。" },
+    parents: ["relativity", "scientific_method"],
+    spread: [{ year: 1947, coord: [40.7, -74.0], label: { en: "Bell Labs", zh: "贝尔实验室" } }],
+    traits: t(70, 25, 90, 98, 70, 90, 75, 50),
+  },
+  {
+    id: "ai_paradigm", type: "paradigm",
+    name: { en: "Artificial intelligence", zh: "人工智能" },
+    origin: [42.4, -71.1], originLabel: { en: "Dartmouth", zh: "达特茅斯" },
+    bornYear: 1956,
+    desc: { en: "Machines that learn, reason, model the world — now a participant in idea evolution itself.",
+            zh: "能学习、推理、建模世界的机器 — 如今亦参与观念演化本身。" },
+    parents: ["scientific_method", "evolution"],
+    spread: [
+      { year: 2012, coord: [43.66, -79.4], label: { en: "Toronto",     zh: "多伦多" } },
+      { year: 2022, coord: [37.7, -122.4], label: { en: "OpenAI / Anthropic", zh: "OpenAI / Anthropic" } },
+      { year: 2024, coord: [39.9, 116.4],  label: { en: "Beijing",     zh: "北京" } },
+    ],
+    traits: t(85, 60, 80, 99, 95, 90, 90, 70),
+  },
+
+  // ---------- Internet memes ----------
+  {
+    id: "meme_dawkins", type: "meme",
+    name: { en: "The meme (concept)", zh: "迷因（概念）" },
+    origin: [51.75, -1.26], originLabel: { en: "Oxford", zh: "牛津" },
+    bornYear: 1976,
+    desc: { en: "Dawkins' replicator unit of culture — a meme about memes that legitimized everything that follows.",
+            zh: "道金斯所提的文化复制子 — 一个关于迷因的迷因，使其后一切合法化。" },
+    parents: ["evolution"],
+    spread: [{ year: 2000, coord: [37.4, -122.1], label: { en: "Internet", zh: "互联网" } }],
+    traits: t(70, 80, 50, 85, 95, 70, 80, 70),
+  },
+  {
+    id: "internet_meme", type: "meme",
+    name: { en: "Image macro / TikTok format", zh: "图像迷因 / TikTok 格式" },
+    origin: [37.4, -122.1], originLabel: { en: "Web", zh: "互联网" },
+    bornYear: 2005,
+    desc: { en: "Rapid-mutation visual templates that compress an in-joke, ideology, or feeling into a shareable atom.",
+            zh: "快速变异的视觉模板，把内行笑话、意识形态或情绪压缩为可分享的原子。" },
+    parents: ["meme_dawkins"],
+    spread: [
+      { year: 2016, coord: [39.9, 116.4], label: { en: "Chinese internet", zh: "中文互联网" } },
+      { year: 2020, coord: [-23.5, -46.6], label: { en: "Brazil",        zh: "巴西" } },
+    ],
+    traits: t(95, 95, 30, 99, 99, 60, 90, 95),
+  },
+  {
+    id: "ai_narrative", type: "meme",
+    name: { en: "AI-generated narrative", zh: "AI 生成叙事" },
+    origin: [37.7, -122.4], originLabel: { en: "Generative AI hubs", zh: "生成式 AI 中心" },
+    bornYear: 2022,
+    desc: { en: "Persuasive content produced at near-zero marginal cost — the first non-human voice in the memetic ecology at scale.",
+            zh: "近乎零边际成本生产的劝服性内容 — 迷因生态中首个大规模的非人类声音。" },
+    parents: ["ai_paradigm", "internet_meme"],
+    spread: [{ year: 2024, coord: [22.3, 114.2], label: { en: "Global", zh: "全球" } }],
+    traits: t(75, 90, 30, 99, 99, 70, 85, 70),
+  },
+  {
+    id: "conspiracy", type: "meme",
+    name: { en: "Conspiracy systems", zh: "阴谋系统" },
+    origin: [39.0, -95.5], originLabel: { en: "Anglosphere internet", zh: "英语互联网" },
+    bornYear: 2017,
+    desc: { en: "Self-sealing narratives that interpret all evidence — including refutation — as confirmation. Highly transmissible, low truth-value.",
+            zh: "自我封闭的叙事系统，把一切证据 — 包括反驳 — 都解读为佐证。极强传播，弱真值。" },
+    parents: ["nationalism", "internet_meme"],
+    spread: [
+      { year: 2020, coord: [52.5, 13.4], label: { en: "Europe",       zh: "欧洲" } },
+      { year: 2022, coord: [-33.9, 151.2], label: { en: "Australia",  zh: "澳大利亚" } },
+    ],
+    traits: t(95, 90, 20, 95, 90, 30, 92, 75),
+  },
+
+  // ---------- Symbols ----------
+  {
+    id: "alphabet", type: "symbol",
+    name: { en: "Phoenician alphabet", zh: "腓尼基字母" },
+    origin: [33.9, 35.5], originLabel: { en: "Tyre", zh: "推罗" },
+    bornYear: -1050,
+    desc: { en: "A small set of phonetic glyphs that compressed millennia of cuneiform-and-hieroglyph writing into a learnable system — the substrate of every Western script.",
+            zh: "一小套表音符号，把数千年的楔形与象形书写压缩为可学习系统 — 西方一切文字的基底。" },
+    parents: [],
+    spread: [
+      { year: -800, coord: [38.0, 23.7], label: { en: "Greek",       zh: "希腊文" } },
+      { year: -700, coord: [41.9, 12.5], label: { en: "Latin",       zh: "拉丁文" } },
+    ],
+    traits: t(60, 95, 70, 80, 95, 95, 60, 95),
+  },
+  {
+    id: "hanzi", type: "symbol",
+    name: { en: "Chinese characters", zh: "汉字" },
+    origin: [35.0, 113.0], originLabel: { en: "Yellow River", zh: "黄河" },
+    bornYear: -1200,
+    desc: { en: "Logographs that bind speech to meaning across mutually unintelligible dialects — a bandwidth choice that held a civilization together for three millennia.",
+            zh: "把言语与意义绑定的表意字符，跨越互不通的方言 — 一项把文明维系三千年的带宽选择。" },
+    parents: [],
+    spread: [
+      { year: 100,  coord: [21.0, 105.8], label: { en: "Vietnam",     zh: "越南" } },
+      { year: 600,  coord: [37.5, 127.0], label: { en: "Korea",       zh: "朝鲜" } },
+      { year: 700,  coord: [35.0, 138.0], label: { en: "Japan",       zh: "日本" } },
+    ],
+    traits: t(80, 30, 95, 50, 80, 90, 70, 99),
+  },
+  {
+    id: "cross", type: "symbol",
+    name: { en: "The Cross", zh: "十字架" },
+    origin: [31.7, 35.2], originLabel: { en: "Jerusalem", zh: "耶路撒冷" },
+    bornYear: 30,
+    desc: { en: "The most-replicated graphic in human history — two intersecting lines that compress an entire soteriology.",
+            zh: "人类史上复制最多的图形 — 两条相交直线，压缩一整套救赎论。" },
+    parents: ["christianity"],
+    spread: [
+      { year: 313,  coord: [41.0, 28.9], label: { en: "Imperial standard", zh: "帝国标志" } },
+      { year: 1500, coord: [-12.0, -77.0], label: { en: "Americas",    zh: "美洲" } },
+    ],
+    traits: t(95, 99, 95, 30, 90, 70, 95, 99),
+  },
+];
