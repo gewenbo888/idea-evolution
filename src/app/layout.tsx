@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     languages: { en: "/", "zh-CN": "/", "x-default": "/" },
   },
   openGraph: {
+    images: [{ url: "/opengraph-image.png", width: 1200, height: 630, alt: "Idea Evolution 观念演化" }],
     title: "Idea Evolution",
     description: "How memes, religions, ideologies, paradigms, and narratives spread across civilization. Bilingual EN/中文.",
     url: "https://idea-evolution.psyverse.fun/",
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
     alternateLocale: ["zh_CN"],
   },
   twitter: {
+    images: ["/twitter-image.png"],
     card: "summary_large_image",
     title: "Idea Evolution",
     description: "Civilization-scale memetic propagation. Bilingual.",
